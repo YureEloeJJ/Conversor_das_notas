@@ -3,27 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Moedas para intercambio</title>
+    <title>Conversor de Moeda</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <h1>Bem-vindo Conversor de Moeda</h1>
+    <div class="container">
+        <h1>Conversor de Moeda</h1>
+        <form method="post">
+            <div class="input-group">
+                <label for="valor_brl">Digite o valor em BRL:</label>
+                <input type="number" name="valor_brl" step="0.01" required placeholder="R$ 0,00">
+            </div>
 
-    <form method="post">
-        <label for="valor_brl">Digite o valor em BRL:</label>  
-        <input type="number" name="valor_brl" step="0.01" required><br><br>
+            <div class="input-group">
+                <label for="escolha">Escolha a moeda para conversão:</label><br>
+                <input type="radio" name="escolha" value="1" required> Dólar<br>
+                <input type="radio" name="escolha" value="2" required> Euro <br>
+            </div>
 
-        <label for="escolha">Escolha a moeda para conversão:</label><br>
-        <input type="radio" name="escolha" value="1" required> Dólar<br>
-        <input type="radio" name="escolha" value="2"> Euro<br><br>   
+            <button type="submit">Converter</button>
+        </form>
 
-        <button type="submit">Converter</button>
-    </form>
+             
+        {% if resultado is not none %}
+            <div class="result">
+                <h2>Resultado:</h2>
+                <p>{{ valor_brl }} BRL é igual a <strong>{{ resultado }}</strong> {{ moeda }}.</p>
+            </div>
+        {% elif resultado == "Escolha inválida" %}
+            <p class="error">Escolha inválida! Por favor, selecione uma moeda para conversão.</p>
+        {% endif %}
+    </div>
 
-    {% if resultado is not none %}
-        <h2>Resultado:</h2>
-        <p>{{ valor_brl }} BLR é igual a {{ resultado }} {{ moeda }}.</p>
-    {% endif %}
-
-    
+    <!--java seco só pra fica masi bunito-->
+    <script>
+        const form = document.querySelector('form');
+        const button = document.querySelector('button');
+        
+        form.addEventListener('submit', function () {
+            button.innerHTML = "Carregando...";
+            button.disabled = true;
+        });
+    </script>
 </body>
 </html>
